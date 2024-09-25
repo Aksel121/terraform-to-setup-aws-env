@@ -5,5 +5,11 @@ variable "cidr" {
 
 variable "az" {
   type = list
-  default = ["ap-south-1a","ap-south-1b"]
+  default = ["us-west-1a","us-west-1c"]
+}
+
+variable "prefix" {
+  type    = string
+  default = "terraform-to-setup-aws-env"
+
 }

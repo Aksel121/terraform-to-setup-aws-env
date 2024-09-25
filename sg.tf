@@ -28,7 +28,7 @@ resource "aws_security_group" "allow_tls" {
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = join("-", [var.prefix, "allow-tls"])
   }
 }
 
@@ -61,6 +61,6 @@ resource "aws_security_group" "allow_tls_db" {
   }
 
   tags = {
-    Name = "allow_tls_db"
+    Name = join("-", [var.prefix, "allow-tls-db"])
   }
 }

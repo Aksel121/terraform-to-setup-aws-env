@@ -8,7 +8,7 @@ resource "aws_route_table" "rtb" {
   }
 
   tags = {
-    Name = "MyRoute"
+    Name = join("-", [var.prefix, "my-route"])
   }
 }
 
@@ -28,6 +28,6 @@ resource "aws_default_route_table" "dfltrtb" {
   }
 
   tags = {
-    Name = "dfltrtb"
+    Name = join("-", [var.prefix, "dfltrb"])
   }
 }

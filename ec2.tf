@@ -1,37 +1,21 @@
 resource "aws_instance" "web" {
-  ami           = "ami-026255a2746f88074"
-  instance_type = "t2.micro"
-  key_name = "skillupright"
-  subnet_id = aws_subnet.public[count.index].id
-  vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  ami                         = "ami-047d7c33f6e7b4bc4"
+  instance_type               = "t2.micro"
+  key_name                    = "deployer-key"
+  subnet_id                   = aws_subnet.public[count.index % 2].id  # Use modulo to cycle through the subnets
+  vpc_security_group_ids      = [aws_security_group.allow_tls.id]
   associate_public_ip_address = true
-  count = 2
+  count                       = 6
 
   tags = {
-    Name = "WebServer"
-  }
-
-  provisioner "file" {
-    source = "./skillupright.pem"
-    destination = "/home/ec2-user/skillupright.pem"
-  
-    connection {
-      type = "ssh"
-      host = self.public_ip
-      user = "ec2-user"
-      private_key = "${file("./skillupright.pem")}"
-    }  
+    Name = "WebServer-${count.index}"
   }
 }
 
-resource "aws_instance" "db" {
-  ami           = "ami-026255a2746f88074"
-  instance_type = "t2.micro"
-  key_name = "skillupright"
-  subnet_id = aws_subnet.private.id
-  vpc_security_group_ids = [aws_security_group.allow_tls_db.id]
-
-  tags = {
-    Name = "DB Server"
-  }
+resource "aws_key_pair" "deployer" {
+  key_name   = "deployer-key"
+  public_key = file("~/.ssh/id_ed25519.pub")
 }
+
+
+
